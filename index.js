@@ -20,6 +20,7 @@ const bodyParser = require('body-parser');
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
 const MongoStore = require('connect-mongo')
+const port = process.env.PORT || 4000;
 
 const database = process.env.MongoAtlasUrl
 
@@ -185,7 +186,7 @@ app.use((err, req, res, next) => {
 
 
 
-app.listen(3000, ()=>{
+app.listen(port, ()=>{
 
-    console.log('Serving on port 3000');
+    console.log(`Serving on port ${port}`);
 })
