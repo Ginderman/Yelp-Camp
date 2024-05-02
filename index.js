@@ -29,8 +29,8 @@ const reviewRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/users');
 
 
-//mongoose.connect('mongodb://localhost:27017/yelp-camp')
-mongoose.connect(database)
+mongoose.connect('mongodb://localhost:27017/yelp-camp')
+//mongoose.connect(database)
 
 
 mongoose.connection.on("error", console.error.bind(console, "connection error:"));
