@@ -15,7 +15,6 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./Models/user');
-const axios = require('axios');
 const bodyParser = require('body-parser');
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
@@ -52,6 +51,39 @@ app.use(bodyParser.urlencoded({ extended: false})); // for parsing application/x
 app.use(bodyParser.json()); // for parsing application/json
 app.use(methodOverride('_method'));//for using method override for requests to be able to post and delete
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(mongoSanitize());
+
+
+const store = new MongoStore({
+    mongoUrl: process.env.MongoAtlasUrl,
+        touchAfter: 24 * 60 * 60,
+        crypto: {
+            secret: process.env.SECRET
+        }
+});
+
+store.on('error', function(e) {
+    console.log("SESSION STORE ERROR", e)
+});
+
+
+const sessionConfig = {
+    name: 'MyCookie',
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { 
+        expires:Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxage: 1000 * 60 * 60 * 24 * 7,
+        httpOnly: true,
+        //secure: true
+     },
+    store: store
+    
+}
+
+app.use(session(sessionConfig));
+app.use(flash());
 app.use(helmet());
 
 
@@ -99,39 +131,8 @@ app.use(
         },
     })
 );
-app.use(flash());
-app.use(mongoSanitize());
 
 
-const store = new MongoStore({
-    mongoUrl: 'mongodb://localhost:27017/yelp-camp',
-        touchAfter: 24 * 60 * 60,
-        crypto: {
-            secret: 'thisshouldbeabettersecret!'
-        }
-});
-
-store.on('error', function(e) {
-    console.log("SESSION STORE ERROR", e)
-});
-
-
-const sessionConfig = {
-    name: 'MyCookie',
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { 
-        expires:Date.now() + 1000 * 60 * 60 * 24 * 7,
-        maxage: 1000 * 60 * 60 * 24 * 7,
-        httpOnly: true,
-        //secure: true
-     },
-    store: store
-    
-}
-
-app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
