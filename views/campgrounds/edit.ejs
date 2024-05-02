@@ -1,0 +1,91 @@
+<% layout('layouts/boilerplate') -%>
+    <div class="row">
+        <h1 class="text-center">Edit <%= campground.title  %></h1>
+        <div class="col-md-6 offset-md-3">
+            <form action="/campgrounds/<%=campground._id%>?_method=PUT" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Enter a new title</label>
+                    <input type="text" class="form-control" name="title" id="title" value="<%=campground.title%>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter a new title.
+                    </div>
+                </div>
+    
+                <div class="mb-3">
+                    <label for="price" class="form-label">Enter a new campground price</label>  
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1">$</span>
+                        <input type="text" class="form-control" name="price" id="price" value="<%=campground.price%>" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please enter a new price.
+                        </div>
+                    </div>
+                </div>
+    
+               
+    
+                <div class="mb-3">
+                    <label for="textbox" class="form-label">Enter a new description</label>
+                    <textarea name="description" class="form-control" id="textbox" required><%=campground.description%></textarea>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter a new description.
+                    </div>
+                </div>
+    
+                <div class="form-file mb-3">
+                    <label class="form-label" for="image">Enter Images</label>
+                    <input type="file" name="image" class="form-control" id="image" placeholder="Choose Files" multiple>
+                    <div id="imageDiv" name="imageDiv"></div>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+    
+                <div class="mb-3">
+                    <label for="title" class="form-label">Enter a new location</label>
+                    <input type="text" class="form-control" name="location" value="<%=campground.location%>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter a new location.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h5 class="card-title ms-2">Delete Images</h5>
+                   
+                            <% campground.images.forEach(function(image, i){ %>
+                                <div class="mb-1"> 
+                                    <img src="<%=image.thumbnail%>" alt="" class="img-thumbnail">
+                                    <% let filename = image.filename.replace('YelpCamp/', '')%>
+                                    <div class="form-check-inline">
+                                        <input type="checkbox" id="image-<%=i%>" class="me-1" name="deleteImages[]" value="<%= image.filename %>"><span><%=filename%></span>
+                                    </div>
+                                    <label for="image-<%=i%>">Delete?</label>
+                                </div>
+
+                            <% }) %>
+                </div>
+        
+                <div class="mb-3" >
+                    <button class="btn btn-success">UpdateCampground</button>
+                </div>
+            </form>
+        
+            <a href="/campgrounds" class=" btn btn-primary">Back</a></button>
+    
+        </div>
+    
+    </div>
+    <script src="/javascripts/dom.js"></script>
+
+    
