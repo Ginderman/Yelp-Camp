@@ -29,7 +29,7 @@ const reviewRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/users');
 
 
-mongoose.connect('mongodb://localhost:27017/yelp-camp')
+mongoose.connect('mongodb://localhost:27017/yelp-camp') //<---Change in test file!
 //mongoose.connect(database)
 
 
