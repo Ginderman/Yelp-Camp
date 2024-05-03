@@ -5,6 +5,9 @@ const passport = require('passport');
 const {storeReturnTo} = require('../utils/storeReturnTo');
 const usersController = require('../controllers/users')
 
+router.route('/')
+      .get( (req, res) => {res.redirect('/home')});
+
 router.route('/register')
       .get((usersController.registerPage))
       .post(catchAsync (usersController.createUser));
